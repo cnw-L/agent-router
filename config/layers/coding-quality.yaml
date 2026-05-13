@@ -1,0 +1,39 @@
+schema_version: 1
+purpose: Target-state implementation quality gate for code writing and code review.
+load_policy: on_code_routes
+
+core_rule: When the plan is confirmed, implement the target design directly without avoidable MVP residue, temporary glue, duplicate logic, or known cleanup debt.
+
+implementation_modes:
+  prototype:
+    use_when: exploring unknown UX, API shape, or algorithm and user accepts throwaway work
+    constraints: isolate from production path and label as disposable
+  target_state:
+    use_when: default for confirmed implementation
+    constraints: smallest necessary scope, production-shaped, tested or otherwise verified
+  migration:
+    use_when: large change must be staged
+    constraints: every stage keeps system coherent and aligned with final architecture
+
+pre_edit_checks:
+  - identify existing project patterns
+  - identify impact set: edit files, callers, tests, config, docs
+  - check API/library facts when version-sensitive
+  - define verification gate before editing
+
+code_rules:
+  - Prefer the shortest rigorous implementation.
+  - If 10 clear lines solve it, do not write 20.
+  - Reuse existing abstractions before adding new ones.
+  - Do not duplicate logic or create temporary adapters unless migration requires it.
+  - Do not leave core TODOs, broken callers, or known follow-up cleanup.
+  - Handle types, errors, edge cases, tests, and configuration in the same implementation pass when in scope.
+  - Avoid speculative extensibility and unrelated refactors.
+  - Keep public contracts and security boundaries explicit.
+
+post_edit_review:
+  - diff is smaller than or equal to necessary scope
+  - no avoidable duplicate logic
+  - no stale intermediate state
+  - callers and tests match changed contracts
+  - verification evidence exists or gap is reported

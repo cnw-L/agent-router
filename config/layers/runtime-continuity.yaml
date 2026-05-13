@@ -1,0 +1,38 @@
+schema_version: 3
+purpose: Lightweight continuity and knowledge capture. This is not a durable autonomous runtime.
+load_policy: on_continuity_route_only
+
+principles:
+  - Write continuity artifacts only when they reduce future rereading or recovery cost.
+  - Keep artifacts concise, factual, and project-local.
+  - Prefer handoff for task recovery, context-manifest for code context, devlog for decisions, ADR for durable architecture decisions.
+  - Do not create continuity files for tiny tasks unless asked.
+
+artifacts:
+  handoff:
+    path: docs/ts-handoff.md
+    use_when: [multi_session, user_pauses, verification_failed_to_resume, many_files_changed]
+    sections: [current_goal, status, files_changed, decisions, tests, risks, next_steps, assumptions]
+  context_manifest:
+    path: docs/context-manifest.md
+    use_when: [multi_file_context, impact_set_identified, public_contract_touched, long_task]
+  devlog:
+    path: docs/ts-devlog.md
+    use_when: [important_decision, rejected_path, complex_investigation, user_wants_diary]
+    avoid: [chat_log, duplicate_handoff, trivial_task]
+  task_state:
+    path: docs/ts-runtime/task-state.yaml
+    use_when: [complex_resume, multi_agent_wave, verification_state_must_resume]
+    role: compact state, not an execution engine
+  project_rules:
+    path: docs/ts-runtime/project-rules.yaml
+    use_when: [recurring_path_rules, AGENTS_growing_too_large, convention_drift]
+  checkpoint:
+    directory: docs/ts-checkpoints/
+    use_when: [risky_refactor_boundary, before_thread_handoff, after_worker_integration, major_verification_milestone]
+
+selection:
+  tiny_task: []
+  normal_code_task: [handoff_if_existing_project_uses_it]
+  complex_code_task: [context_manifest, handoff, devlog_if_decisions_matter]
+  multi_session_or_multi_agent: [context_manifest, task_state, handoff, checkpoint]

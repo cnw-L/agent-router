@@ -1,0 +1,55 @@
+schema_version: 2
+purpose: Select enough code context for correct changes without full-repo reads or single-file tunnel vision.
+load_policy: on_code_or_review_routes
+
+flow:
+  - map
+  - slice
+  - expand
+  - impact_set
+  - delta_review
+
+map:
+  prefer:
+    - rg or file list
+    - nearest AGENTS.md
+    - README or package config only when relevant
+    - symbol or route names from task language
+  avoid:
+    - reading entire repositories
+    - opening generated/vendor/build directories
+
+slice:
+  default_initial_full_files: 3
+  max_initial_full_files: 8
+  include:
+    - likely edit files
+    - same-pattern implementation
+    - related tests
+    - relevant config or schema
+
+expand_when:
+  - public contract changes
+  - caller/callee behavior is unclear
+  - tests indicate hidden dependency
+  - security, data, or permission boundary is touched
+  - initial slice conflicts with project rules
+
+impact_set:
+  record:
+    - files_to_edit
+    - callers_or_consumers
+    - tests_to_update_or_run
+    - configs_or_docs_to_update
+    - risks_and_unknowns
+
+delta_review:
+  after_edit:
+    - re-read changed files
+    - inspect direct callers or tests if contracts changed
+    - avoid restarting context discovery unless scope changed materially
+
+artifacts:
+  context_manifest:
+    path: docs/context-manifest.md
+    use_when: multi-file or long-running task would otherwise require rediscovery

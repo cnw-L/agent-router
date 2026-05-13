@@ -1,0 +1,34 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup directories
+*.backup.*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Local config (user-specific, not for repo)
+.local-config.yaml
+
+# Node modules (if any vendor dependencies)
+node_modules/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Eval results (user data)
+evals/results/
+
+# Secret files
+.env
+*.secret
+*.key

@@ -1,0 +1,52 @@
+schema_version: 1
+purpose: Spend evidence-gathering tokens where they prevent later rework.
+load_policy: on_route_only
+
+principle: Do not minimize tokens per step; minimize tokens per successful delivery.
+
+research_before_decision:
+  use_when:
+    - best-practice request
+    - architecture or configuration decision
+    - dependency/tool/process selection
+    - high uncertainty or fast-changing ecosystem
+  sources_prefer:
+    - official documentation
+    - maintained GitHub repositories
+    - mature project examples
+    - benchmark or eval reports
+    - security guidance for trust boundaries
+  output:
+    - consensus
+    - disagreements
+    - applicable_pattern
+    - non_applicable_pattern
+    - recommendation
+
+research_before_implementation:
+  use_when:
+    - plan is confirmed and code will change
+    - library, SDK, API, framework, or config behavior matters
+    - project pattern is unknown
+    - tests or error handling patterns are unclear
+  sources_prefer:
+    - project-local same-pattern code
+    - nearest AGENTS.md and project rules
+    - related tests
+    - Context7 or official docs
+    - changelog/version docs when behavior may have changed
+  output:
+    - implementation_facts
+    - impact_set
+    - project_patterns_to_follow
+    - verification_plan
+
+budget:
+  stop_when:
+    - enough evidence supports one path
+    - remaining sources are unlikely to change the decision
+    - implementation facts are sufficient to write target-state code
+  avoid:
+    - source hoarding
+    - dumping long excerpts
+    - continuing broad research after plan confirmation

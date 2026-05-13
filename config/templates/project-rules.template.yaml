@@ -1,0 +1,45 @@
+schema_version: 1
+project: ""
+updated_at: ""
+
+rules:
+  - id: code-quality
+    description: Minimal, typed, tested, local-pattern code changes.
+    activation:
+      mode: task
+      routes:
+        - implementation
+        - review
+    globs: []
+    roles:
+      - delivery_worker
+      - code_quality_reviewer
+    summary: Prefer the smallest correct change; preserve behavior and contracts.
+    full_rule_path: ""
+    related_checks:
+      - lint
+      - typecheck
+      - focused tests
+    owner: project
+    last_reviewed: ""
+
+  - id: tests
+    description: Test conventions for this project.
+    activation:
+      mode: glob
+    globs:
+      - "**/*test*"
+      - "**/*spec*"
+    routes:
+      - implementation
+      - bugfix
+      - review
+    roles:
+      - delivery_worker
+      - verification_sidecar
+    summary: Keep tests focused and consistent with nearby examples.
+    full_rule_path: ""
+    related_checks:
+      - focused tests
+    owner: project
+    last_reviewed: ""

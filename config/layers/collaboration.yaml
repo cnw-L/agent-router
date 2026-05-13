@@ -1,0 +1,48 @@
+schema_version: 3
+purpose: Bounded collaboration model for subagents, sidecars, and review roles.
+load_policy: on_multi_agent_or_review_routes
+
+principles:
+  - The main thread owns planning, integration, final verification, and user communication.
+  - Use subagents deliberately for isolated context, not by default.
+  - Prefer read-only sidecars for exploration, review, security, and verification.
+  - Use workers only for independent write slices with clear ownership.
+  - Consume outputs before launching another wave.
+
+budgets:
+  default_active_subagents: 2
+  max_active_subagents: 4
+  use_when:
+    - tasks are independent
+    - context would otherwise flood main thread
+    - verification or review can run in parallel
+    - write surfaces are disjoint
+  avoid_when:
+    - next step is blocked on the result
+    - task is tiny
+    - integration cost exceeds benefit
+
+roles:
+  supervisor:
+    owner: system
+    duties: [plan, dispatch, integrate, verify, decide, report]
+  context_explorer:
+    mode: read_only
+    prompt: templates/context-explorer-prompt.md
+    output_contract: [relevant_files, candidate_edit_files, contracts, tests, risks, stop_condition, refresh_or_retire]
+  delivery_worker:
+    mode: bounded_write
+    prompt: templates/delivery-worker-prompt.md
+    output_contract: [summary, files_changed, verification, integration_notes, risks, continue_refresh_or_retire]
+  review_sidecar:
+    mode: read_only
+    prompt: templates/review-sidecar-prompt.md
+    output_contract: [verdict, findings, evidence, missing_tests, residual_risks, continue_refresh_or_retire]
+  verification_sidecar:
+    mode: read_only
+    prompt: templates/verification-sidecar-prompt.md
+    output_contract: [verdict, commands_run, evidence, failure_cause, next_step, continue_refresh_or_retire]
+  security_sidecar:
+    mode: read_only
+    prompt: templates/security-sidecar-prompt.md
+    output_contract: [verdict, trust_boundaries, findings, evidence, smallest_fix, residual_risk]

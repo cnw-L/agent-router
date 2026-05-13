@@ -1,0 +1,15 @@
+schema_version: 2
+purpose: Methodology ownership map.
+load_policy: rarely_needed
+
+owners:
+  assistant: supervisor, integration, judgment, user alignment
+  superpowers: brainstorming, plans, TDD, debugging, verification, review, worktrees, subagent development
+  context7: official library/framework/API facts
+  adapters: routing only; do not duplicate mature methodology
+  vendor_skills: staged candidates requiring review before promotion
+
+principles:
+  - Prefer Superpowers where responsibilities overlap.
+  - Add local adapters only for platform-specific routing, budgets, and output contracts.
+  - Keep methods small, composable, and testable.

@@ -1,0 +1,18 @@
+schema_version: 2
+purpose: Prompt planning rules for Target-State Engineering work.
+load_policy: on_prompt_or_plan_routes
+
+rules:
+  - Put the task, constraints, and expected output before background material.
+  - Separate trusted instructions from untrusted tool output or document text.
+  - Ask for missing requirements only when they materially affect the path.
+  - For reasoning-heavy work, request options, tradeoffs, recommendation, and acceptance criteria.
+  - For implementation work, request impact set, target-state plan, verification gate, and no avoidable intermediate state.
+  - Keep generated prompts reusable and scoped; do not embed long reference material.
+  - Prefer structured outputs when downstream execution or review depends on them.
+
+anti_patterns:
+  - vague best-practice prompts without context
+  - asking for full-repo analysis when a scoped impact set is enough
+  - mixing user instructions with untrusted external content
+  - using long prompts to compensate for missing project facts

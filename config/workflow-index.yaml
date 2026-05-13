@@ -1,0 +1,102 @@
+schema_version: 3
+owner: system
+name: Target-State Engineering OS
+purpose: Lightweight routing map for decision alignment, evidence gathering, target-state implementation, and verification.
+maturity: target_state_engineering_os
+load_policy: progressive_disclosure
+update_policy: confirm_before_semantic_change
+
+principles:
+  - Do not minimize tokens per step; minimize tokens per successful delivery.
+  - Use enough evidence before deciding or implementing.
+  - Keep always-on instructions short; load layers and skills only when relevant.
+  - After plan confirmation, implement the target design directly without avoidable MVP residue.
+  - The AI assistant remains supervisor and integrator; tools and skills provide evidence and process.
+
+layers:
+  methodology: layers/methodology.yaml
+  decision_alignment: layers/decision-alignment.yaml
+  research_policy: layers/research-policy.yaml
+  context_intake: layers/context-intake.yaml
+  context_graph: layers/context-graph.yaml
+  project_rules: layers/project-rules.yaml
+  coding_quality: layers/coding-quality.yaml
+  collaboration: layers/collaboration.yaml
+  runtime_continuity: layers/runtime-continuity.yaml
+  prompting: layers/prompting.yaml
+
+routes:
+  tiny_task:
+    when: simple answer, one-step read, trivial edit, or explicit narrow command
+    mode: shortest_safe_path
+    load: []
+    avoid: [heavy_research, spec_planning, subagents, full_repo_scan]
+    gate: verify_if_changed
+
+  design_or_config:
+    when: architecture, configuration, workflow, policy, dependency, or best-practice decision
+    mode: decision_first
+    load: [decision_alignment, research_policy]
+    skills: [decision-alignment, best-practice-research, critical-thinking]
+    output: [goal, constraints, options, tradeoffs, recommendation, acceptance_criteria]
+    gate: user_confirmation_with_dissent_reviewed
+
+  complex_feature:
+    when: new feature, cross-module behavior, public API, or multi-file product change
+    mode: spec_then_target_state
+    load: [decision_alignment, research_policy, context_intake, coding_quality]
+    skills: [decision-alignment, codebase-impact, implementation-quality, critical-thinking]
+    prefer: [superpowers:brainstorming, superpowers:writing-plans, superpowers:test-driven-development]
+    optional_vendor: [spec-kit, mattpocock]
+    gate: focused_tests_plus_review
+
+  implementation:
+    when: plan is confirmed and code must change
+    mode: target_state_build
+    load: [context_intake, project_rules, coding_quality]
+    skills: [codebase-impact, implementation-quality, coding-workflow]
+    tools: [Context7_if_api_or_version_sensitive]
+    gate: relevant_tests_lint_type_build
+
+  bugfix:
+    when: bug, failing test, regression, crash, flaky behavior, or unexpected output
+    mode: diagnose_then_target_state_fix
+    load: [context_intake, coding_quality]
+    skills: [codebase-impact, implementation-quality]
+    prefer: [superpowers:systematic-debugging]
+    gate: regression_test_plus_verification
+
+  review:
+    when: review, audit, PR review, self-review, or risk check
+    mode: independent_review
+    load: [coding_quality, collaboration]
+    skills: [code-review, critical-thinking]
+    gate: findings_first
+
+  security:
+    when: auth, permissions, secrets, filesystem, network, user input, privacy, deserialization, SQL, commands, or trust boundary
+    mode: security_review
+    load: [coding_quality, collaboration]
+    skills: [security-review]
+    gate: security_findings_and_residual_risk
+
+  pr_or_ci:
+    when: branch, PR, CI, GitHub Actions, review comments, or release loop
+    mode: pr_ci_loop
+    skills: [pr-workflow]
+    tools: [GitHub_if_available]
+    gate: ci_or_local_equivalent
+
+  multi_agent:
+    when: independent read-only exploration, sidecar review, slow verification, or disjoint write slices
+    mode: bounded_parallelism
+    load: [collaboration]
+    prefer: [superpowers:subagent-driven-development, superpowers:using-git-worktrees]
+    gate: integrate_outputs_before_next_wave
+
+  continuity:
+    when: long-running, multi-session, multi-agent, major decision, failed verification to resume, or user asks for new thread
+    mode: lightweight_state
+    load: [runtime_continuity]
+    gate: concise_artifact_only_if_reduces_future_cost
+

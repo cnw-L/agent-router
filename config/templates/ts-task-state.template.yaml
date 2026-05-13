@@ -1,0 +1,39 @@
+schema_version: 1
+task:
+  id: ""
+  title: ""
+  status: active
+  updated_at: ""
+
+routes:
+  active:
+    - context_intake
+  loaded_layers: []
+  loaded_skills: []
+  active_roles: []
+
+context:
+  manifest: docs/context-manifest.md
+  candidate_edit_files: []
+  read_only_support_files: []
+  contracts_to_preserve: []
+  matched_project_rules: []
+  expansion_triggers: []
+
+plan:
+  current_step: ""
+  completed_steps: []
+  next_steps: []
+  blocked_on: []
+
+verification:
+  iteration_checks: []
+  completion_checks: []
+  landing_checks: []
+  known_failures: []
+
+continuity:
+  handoff: docs/ts-handoff.md
+  devlog: docs/ts-devlog.md
+  checkpoint: ""
+  resume_prompt: ""

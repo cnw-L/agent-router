@@ -1,0 +1,36 @@
+schema_version: 2
+purpose: Metadata-first project rule activation for paths, languages, modules, and task types.
+load_policy: on_project_work_only
+
+rule_locations:
+  project_agents: AGENTS.md
+  nested_agents: '**/AGENTS.md'
+  runtime_rules: docs/ts-runtime/project-rules.yaml
+  context_manifest: docs/context-manifest.md
+
+activation_modes:
+  always: stable project-wide standards
+  glob: path or file pattern match
+  task: task type match such as tests, migrations, UI, API, security
+  model_decision: description is visible; full rule loads only when relevant
+  manual: user or assistant explicitly references the rule
+
+rule_shape:
+  required:
+    - id
+    - description
+    - activation
+    - scope
+    - rule
+  optional:
+    - examples
+    - anti_examples
+    - verification
+    - owner
+    - last_reviewed
+
+principles:
+  - Keep project AGENTS.md short; move path-specific rules here when they recur.
+  - Prefer concrete examples over vague style advice.
+  - Do not create project rules for one-off preferences.
+  - Update rules only when a pattern is stable enough to reuse.

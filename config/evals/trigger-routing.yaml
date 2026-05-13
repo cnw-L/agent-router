@@ -1,0 +1,80 @@
+schema_version: 3
+purpose: Lightweight routing evals for Target-State Engineering OS. These are regression examples, not hard rules.
+decision_owner: system
+
+eval_policy:
+  - Tiny tasks must stay cheap.
+  - Design/configuration tasks should align before writing.
+  - Best-practice requests should use evidence before recommendation.
+  - Implementation should gather project/API facts before target-state edits.
+  - Code changes should avoid avoidable MVP residue and verify before completion.
+  - Passing means configuration shape is coherent, not that every future task must match exactly.
+
+evals:
+  - id: tiny_markdown_summary
+    prompt: Read this markdown file and summarize it.
+    expected_route: tiny_task
+    should_not_load: [coding-workflow, target_state_implementation, subagents, runtime_continuity]
+
+  - id: config_best_practice
+    prompt: Compare current configuration against GitHub and Claude Code best practices before changing it.
+    expected_route: design_or_config
+    should_consider: [decision-alignment, best-practice-research, research_before_decision]
+    should_not_do: [write_before_recommendation, load_all_vendor_skills]
+
+  - id: confirmed_implementation
+    prompt: The plan is confirmed. Implement the upload endpoint correctly with tests.
+    expected_route: implementation
+    should_consider: [codebase-impact, implementation-quality, research_before_implementation, superpowers:test-driven-development]
+    should_not_do: [rough_mvp_first, duplicate_existing_logic, skip_related_tests]
+
+  - id: failing_payment_webhook
+    prompt: Fix this failing test in the payment webhook flow.
+    expected_route: bugfix
+    should_consider: [superpowers:systematic-debugging, codebase-impact, regression_test, verification]
+
+  - id: context_slice_before_edit
+    prompt: Find the smallest useful context for changing the notification service without editing yet.
+    expected_route: context_intake
+    should_consider: [context-intake, impact_set, related_tests]
+    should_not_do: [full_repo_read, single_file_tunnel_vision, delivery_worker]
+
+  - id: public_contract_change
+    prompt: Change this shared parser contract and update all necessary callers and tests.
+    expected_route: implementation
+    should_consider: [context_graph_policy, impact_set, callers, tests, implementation-quality]
+    should_not_do: [change_only_parser_file, leave_known_followup_cleanup]
+
+  - id: security_boundary_review
+    prompt: Check whether this auth middleware is safe to ship.
+    expected_route: security
+    should_consider: [security-review, trust_boundaries, evidence, residual_risk]
+
+  - id: diff_regression_review
+    prompt: Review this diff for regressions before merge.
+    expected_route: review
+    should_consider: [code-review, bugs_first, missing_tests, target_state_violations]
+
+  - id: parallel_verification
+    prompt: Run the slow integration checks separately and summarize exact failures without changing files.
+    expected_route: multi_agent
+    should_consider: [verification_sidecar, read_only, commands_run, evidence]
+    should_not_do: [delivery_worker, edit_files]
+
+  - id: continuity_for_resume
+    prompt: Continue this multi-file refactor tomorrow; preserve context slice, rules, verification, and next step.
+    expected_route: continuity
+    should_consider: [runtime-continuity, context_manifest, task_state, handoff]
+    should_not_do: [external_durable_runtime, verbose_chat_log]
+
+metrics:
+  - always_on_files_remain_short
+  - layers_are_metadata_first
+  - best_practice_requests_do_research_before_decision
+  - implementation_requests_do_project_or_api_research_before_edit_when_needed
+  - confirmed_plans_use_target_state_implementation
+  - context_intake_avoids_full_repo_reads_and_single_file_tunnel_vision
+  - security_sensitive_tasks_route_to_security_review
+  - review_tasks_do_not_become_implementation_tasks
+  - verification_happens_before_completion_claims
+  - continuity_artifacts_are_written_only_when_they_reduce_future_cost

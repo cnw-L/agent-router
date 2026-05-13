@@ -1,0 +1,31 @@
+schema_version: 1
+purpose: Align with the user before committing to a design, architecture, configuration, or high-impact implementation path.
+load_policy: on_route_only
+
+trigger_when:
+  - user asks for best practice, broad comparison, or not being one-sided
+  - architecture, workflow, configuration, dependency, data, security, or multi-file decision
+  - several reasonable solutions exist
+  - requirements or acceptance criteria are ambiguous
+
+skip_when:
+  - tiny task has one obvious safe answer
+  - user explicitly asks to execute an already confirmed plan
+
+required_output:
+  - goal_understanding
+  - known_facts
+  - constraints
+  - options
+  - tradeoffs
+  - recommendation
+  - rejected_options_with_reasons
+  - acceptance_criteria
+  - confirmation_points
+
+rules:
+  - State assumptions explicitly.
+  - Separate facts from inferences.
+  - Prefer official docs and maintained projects for evidence.
+  - Ask for confirmation before semantic config or architecture changes.
+  - Do not continue researching once a decision-quality recommendation is clear.

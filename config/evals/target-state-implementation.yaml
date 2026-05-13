@@ -1,0 +1,7 @@
+schema_version: 1
+purpose: Regression checks for target-state implementation behavior.
+checks:
+  - no_avoidable_mvp_residue
+  - no_duplicate_logic_when_existing_pattern_available
+  - impact_set_before_multi_file_edit
+  - verification_before_completion_claim

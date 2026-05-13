@@ -1,0 +1,40 @@
+schema_version: 2
+purpose: Optional repo-map policy for context selection. This is not an active graph engine.
+load_policy: on_context_routes_only
+
+status:
+  active_engine: false
+  current_backend: manual_search_and_project_context
+  future_backends: [repo_map_tool, symbol_graph, dependency_graph]
+
+use_for:
+  - selecting likely edit files
+  - finding callers, callees, tests, and shared contracts
+  - preventing full-repo reads
+  - preventing single-file tunnel vision
+
+node_types:
+  - file
+  - symbol
+  - route_or_endpoint
+  - test
+  - config
+  - schema
+  - doc
+
+edge_types:
+  - imports
+  - calls
+  - tests
+  - configures
+  - documents
+  - owns_contract
+
+budget:
+  prefer_top_relevant_nodes: 5
+  expand_step: 3
+  stop_when: impact set is sufficient for target-state implementation
+
+truth_in_advertising:
+  - Do not claim graph automation exists unless a repo-map backend is installed and used.
+  - Treat this file as policy and vocabulary only.
