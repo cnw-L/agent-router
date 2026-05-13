@@ -1,4 +1,4 @@
-# Target-State Engineering OS
+# Agent-Router
 
 A lightweight, cross-platform engineering operating system for AI coding assistants (Claude Code, Codex, Qoder). Enforces progressive disclosure, decision-routing, and quality gates to transform AI coding from chat-based assistance to engineering-grade delivery.
 
