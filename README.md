@@ -17,21 +17,21 @@ Most AI coding assistants suffer from **sycophancy bias** (60-80% agreement rate
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                   AGENTS.md (~3.5KB)                     │
-│           Always-on Core Principles & Routing            │
+│                   AGENTS.md (~3.5KB)                    │
+│           Always-on Core Principles & Routing           │
 └────────────────────────┬────────────────────────────────┘
                          │ Route Task
                          ▼
 ┌─────────────────────────────────────────────────────────┐
-│              workflow-index.yaml (Route Engine)           │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────────┐ │
-│  │ tiny_task│ │design_   │ │complex_  │ │implementa- │ │
-│  │          │ │config    │ │feature   │ │tion        │ │
-│  └──────────┘ └──────────┘ └──────────┘ └────────────┘ │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────────┐ │
-│  │ bugfix   │ │ review   │ │ security │ │ multi_     │ │
-│  │          │ │          │ │          │ │ agent      │ │
-│  └──────────┘ └──────────┘ └──────────┘ └────────────┘ │
+│              workflow-index.yaml (Route Engine)         │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────────┐  │
+│  │ tiny_task│ │design_   │ │complex_  │ │implementa- │  │
+│  │          │ │config    │ │feature   │ │tion        │  │
+│  └──────────┘ └──────────┘ └──────────┘ └────────────┘  │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────────┐  │
+│  │ bugfix   │ │ review   │ │ security │ │ multi_     │  │
+│  │          │ │          │ │          │ │ agent      │  │
+│  └──────────┘ └──────────┘ └──────────┘ └────────────┘  │
 └────────────────────────┬────────────────────────────────┘
                          │ Load on Demand
                          ▼
